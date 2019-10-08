@@ -9,34 +9,48 @@ threshold="${cores:-1}.0"
 echo
 
 if [ $(echo "`cut -f1 -d ' ' /proc/loadavg` < $threshold" | bc) -eq 1 ]; then
-    python /etc/update-motd.d/sysinfo.py
-else
-    echo " System information disabled due to load higher than $threshold"
-fi
+
 upSeconds=`/usr/bin/cut -d. -f1 /proc/uptime`
 secs=$(($upSeconds%60))
 mins=$(($upSeconds/60%60))
 hours=$(($upSeconds/3600%24))
 days=$(($upSeconds/86400))
-UPTIME=`printf "%d days, %02dh %02dm %02ds " "$days" "$hours" "$mins" "$secs"`
+uptime=`printf "%d days, %02dh %02dm %02ds " "$days" "$hours" "$mins" "$secs"`
 ipprive=`/sbin/ifconfig | /bin/grep "broadcast" | awk '{print $2}'`
 ippub=`wget -q -O - http://icanhazip.com/ | tail`
 freemem=$((`cat /proc/meminfo | grep MemFree | awk {'print $2'}`/1024))
 totalmem=$((`cat /proc/meminfo | grep MemTotal | awk {'print $2'}`/1024))
 runps=`ps ax | wc -l | tr -d " "`
-date +"%A, %e %B %Y, %R"
-uname -srmo
-echo "
-	-------------------------------------------------------------------
-	Date		 :	22222222
-	Up time 	 :	$UPTIME
-	System 		 :	Ubuntu Bionic with Armbian Linux 4.19.62-sunxi
-	System load  :	1.18 0.44 0.16
+dday=`date +"%A, %e %B %Y, %R"`
+sysinfo=`uname -srmo`
+tempcpu=`/opt/vc/bin/vcgencmd measure_temp | cut -c6-`
+UptimeString=$(uptime | tr -d ',')
+critical_load=$(( 1 + $(grep -c processor /proc/cpuinfo) / 2 ))
+load=$(awk -F"average: " '{print $2}'<<<"${UptimeString}")
+# storage info
+RootInfo=$(df -h /)
+root_usage=$(awk '/\// {print $(NF-1)}' <<<${RootInfo} | sed 's/%//g')
+root_total=$(awk '/\// {print $(NF-4)}' <<<${RootInfo})
+StorageInfo=$(df -h $STORAGE 2>/dev/null | grep $STORAGE)
+if [[ -n "${StorageInfo}" && ${RootInfo} != *$STORAGE* ]]; then
+        storage_usage=$(awk '/\// {print $(NF-1)}' <<<${StorageInfo} | sed 's/%//g')
+        storage_total=$(awk '/\// {print $(NF-4)}' <<<${StorageInfo})
+fi
+
+echo "	-------------------------------------------------------------------
+	Date		 :	$dday
+	Up time 	 :	$uptime
+	System OS	 :	$sysinfo
+	System load      :	$load $critical_load 0.44 0.16
 	Processes	 :	$runps
-	Memory usage :	$freemem MB (Free) of $totalmem MB (Total) =  7 %
-	CPU temp	 :	27°C
-	Usage of /	 :	10% of 15G
-	IP Addresses :	$ipprive / $ippub
+	Memory usage     :	$freemem MB (Free) of $totalmem MB (Total) =  7 %
+	CPU temp	 :	$tempcpu
+	Usage of /	 :	$storage_usage of $storage_usage
+	IP Addresses     :	$ipprive / $ippub
 	-------------------------------------------------------------------
 "
 printf "\n"
+else
+    echo " System information disabled due to load higher than $threshold"
+fi
+
