@@ -6,4 +6,4 @@ printf "\n"$LIGHT_RED
 #figlet "  "$(hostname -s)
 toilet -f standard -F metal $(hostname -s)
 printf $NONE
-printf "\n"
+#printf "\n"
