@@ -33,7 +33,7 @@ Last login: Wed Oct  9 18:46:24 2019 from 192.168.0.24
 You need to install some packages:
 
 ```
-apt-get install toilet lsb-release python-utmp bc
+apt-get install figlet toilet lsb-release python-utmp bc
 ```
 
 Optionnally, you can install `needrestart` which is used to show a message if your server need a reboot (main reason (and the only one I know): you have upgraded your kernel).
