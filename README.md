@@ -12,28 +12,18 @@ Example:
   |___/\___|_|    \_/ \___|_|
 
 
-  Debian GNU/Linux 8.4 (jessie) (kernel 3.16.0-4-amd64)
+  Raspbian GNU/Linux 10 (buster) (kernel 4.19.75-v7+)
 
+System load:   1.00 1.02 1.01   Up time:       5 days
+Memory usage:  15 % of 926MB    IP:            192.168.0.105
+Usage of /:    16% of 14G
 
-  System information as of Fri Apr 22 10:02:57 2016
+System load:   1.00 1.02 1.01   Up time:       5 days
+Memory usage:  15 % of 926MB    IP:            192.168.0.1 / 85.142.21.134
+CPU temp:      39.2°C
+Usage of /:    16% of 14G
 
-  System load:  2.74                 Processes:           167
-  Memory usage: 98%                  Users logged in:     1
-  Swap usage:   31%
-  Disk Usage:
-    Usage of /                       : 37.0% of 19.18GB
-    Usage of /boot                   : 36.6% of 0.11GB
-    Usage of /home                   : 11.1% of 501.60GB
-  Inode Usage:
-    Usage of /                       : 12.7% of 1286144
-    Usage of /boot                   : 1.1% of 31232
-    Usage of /home                   : 0.1% of 33406976
-
-  Logged in users:
-  user       from laptop.example.org        at Fri Apr 22 09:09:09 2016
-
-No mail.
-Last login: Fri Apr 22 09:23:01 2016 from laptop.example.org
+Last login: Wed Oct  9 18:46:24 2019 from 192.168.0.24
 ```
 
 **Warning** This Debian and Debian-related distributions only.
