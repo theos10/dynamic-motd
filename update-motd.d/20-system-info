@@ -28,7 +28,7 @@ done
 
 cores=$(grep -c ^processor /proc/cpuinfo 2>/dev/null)
 [ "$cores" -eq "0" ] && cores=1
-threshold="${cores:-1}.0"
+threshold="${cores:-1}.7"
 
 #echo
 
